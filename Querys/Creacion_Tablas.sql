@@ -1,3 +1,4 @@
+--se crean las tablas con sus respectivas FK
 use ProyectoFinal
 go
 
