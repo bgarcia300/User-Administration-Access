@@ -13,13 +13,13 @@ go
 create table Usuarios
 (
 Id_Usuario int IDENTITY(1,1) PRIMARY KEY
+, Id_Rol int NOT NULL
+, constraint FK_ROLES_USUARIOS foreign key (Id_Rol)
+references Roles (Id_Rol)
 , Nombre_Completo_Usuario nvarchar(30) unique not null
 , Telefono int
 , Funcion nvarchar(40)
 , Fecha_Nacimiento date not null
-, Id_Rol int NOT NULL
-, constraint FK_ROLES_USUARIOS foreign key (Id_Rol)
-references Roles (Id_Rol)
 )
 go
 
@@ -82,18 +82,21 @@ create table BitacoraAvanceProyectos
 Id_Bitacor_Avance_Proyecto int IDENTITY(1,1) PRIMARY KEY
 , Id_Proyecto int NOT NULL
 , Id_Director int NOT NULL
-, PorcentajeAvance numeric(9,2) NOT NULL
-, EstadoAvance varchar(50) NOT NULL
+, Fecha_Registro_Avance date NOT NULL
+, Hora_Registro_Avance time NOT NULL
+, Porcentaje_Avance numeric(9,2) NOT NULL
+, Estado_Avance varchar(50) NOT NULL
 , Observacion varchar(200) NOT NULL
 )
 go
 
-create table Bitacora_Control_Usuarios
+create table BitacoraControlUsuarios
 (
-IdBitusu int identity(1,1) PRIMARY KEY
-, Id_Bitacora_Usuario int NOT NULL
-, Fecha_Inicio datetime NOT NULL
-, Fecha_Final datetime NOT NULL
-, Tabla_Ingresada varchar(50) NOT NULL
-, Observacion varchar(200) NOT NULL
+Id_Bitacora_Usuario int IDENTITY(1,1) PRIMARY KEY
+, Id_Usuario_Alterado int NOT NULL
+, Nombre_Usuario_Alterado nvarchar(30) NOT NULL
+, Fecha_Registro_Modificacion date NOT NULL
+, Hora_Registro_Modificacion time NOT NULL
+, Tabla_Rol_Alterada varchar(50) NOT NULL
+, Observacion varchar(200)
 )
