@@ -30,7 +30,6 @@ Id_Administrador int IDENTITY(1,1) PRIMARY KEY
 , Id_Rol int NOT NULL
 , Id_Usuario int NOT NULL
 , Nombre_Completo_Administrador nvarchar(30) NOT NULL
-, Observaciones nvarchar(500)
 , constraint FK_ROLES_ADMINISTRADORES foreign key (Id_Rol)
 references Roles (Id_Rol)
 , constraint FK_USUARIOS_ADMINISTRADORES foreign key (Id_Usuario)
@@ -44,7 +43,6 @@ Id_Director int IDENTITY(1,1) PRIMARY KEY
 , Id_Rol int NOT NULL
 , Id_Usuario int NOT NULL
 , Nombre_Completo_Director nvarchar(30) NOT NULL
-, Observaciones nvarchar(500)
 , constraint FK_ROLES_DIRECTORES foreign key (Id_Rol)
 references Roles (Id_Rol)
 , constraint FK_USUARIOS_DIRECTORES foreign key (Id_Usuario)
