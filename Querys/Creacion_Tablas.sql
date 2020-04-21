@@ -94,7 +94,7 @@ Id_Bitacora_Usuario int IDENTITY(1,1) PRIMARY KEY
 , Id_Usuario_Alterado int NOT NULL
 , Nombre_Usuario_Alterado nvarchar(30) NOT NULL
 , Fecha_Registro_Modificacion date NOT NULL
-, Hora_Registro_Modificacion time NOT NULL
+, Hora_Registro_Modificacion time(0) NOT NULL
 , Tabla_Rol_Alterada varchar(50) NOT NULL
 , Observacion varchar(200)
 )

@@ -1,7 +1,7 @@
 --Creacion de Triggers
 use ProyectoFinal
 go
-{
+
 --Trigger registra en bitacora cuando se registra un usuario nuevo
 create trigger TriggerInsercionBitacoraControlUsuario
 on Usuarios
@@ -29,41 +29,67 @@ for delete
 		from deleted
 go
 
-disable trigger TriggerEliminacionBitacoraControlUsuario
-go
-}
 
---Trigger Inserta Usuarios en tabla segun rol 
-create trigger TriggerInsercionUsuarioEnDirectores
+
+--Trigger Inserta Usuarios en tabla Administradores o Directores, segun rol ingresado
+alter trigger TriggerInsercionUsuarioEnTablaSegunRol
 on Usuarios
 for insert 
 	as
-		insert into Directores(Id_Rol, Id_Usuario, Nombre_Completo_Director) 
-		values (inserted.Id_Rol, inserted.Id_Usuario, inserted.Nombre_Completo_Usuario)
+
+	declare @rolIngresado nvarchar(15) = (select Nombre_Rol from Roles where Id_Rol = (select Id_Rol from inserted))
+	
+	if (@rolIngresado = 'Director' or @rolIngresado = 'Administrador' or @rolIngresado = 'Usuario')
+	begin
+
+		if (@rolIngresado = 'Director')
+		begin
+			insert into Directores(Id_Rol, Id_Usuario, Nombre_Completo_Director)
+			select Id_Rol, Id_Usuario, Nombre_Completo_Usuario from inserted
+			select 'El usuario se ingresó a la tabla Directores'
+		end
+
+			else
+			begin
+				if (@rolIngresado = 'Administrador')
+				begin
+						insert into Administradores(Id_Rol, Id_Usuario, Nombre_Completo_Administrador) 
+						select Id_Rol, Id_Usuario, Nombre_Completo_Usuario from inserted
+						select 'El usuario se ingresó a la tabla Administradores'
+				end
+					else 
+					begin
+						select 'El usuario se ingresó a la tabla usuario'
+					end
+			end
+	end
+	else 
+	begin
+		print 'Rol ingresado no existe'
+	end
+			
 go
 
 
 
-	declare @rolIngresado nvarchar(15) = (select Nombre_Rol from Roles where Roles.Id_Rol = inserted.id_rol)
-	if	(@rolIngresado = 'Director' or @rolIngresado = 'Administrador' or @rolIngresado = 'Usuario')
-					if	(@rolIngresado = 'Director')
+
+	--declare @rolIngresado nvarchar(15) = (select Nombre_Rol from Roles where Roles.Id_Rol = inserted.id_rol)
+	--if	(@rolIngresado = 'Director' or @rolIngresado = 'Administrador' or @rolIngresado = 'Usuario')
+	--				if	(@rolIngresado = 'Director')
 							
-						else
-					if (@rolIngresado = 'Administrador')
-							insert into Administradores(Id_Rol, Id_Usuario, Nombre_Completo_Administrador) 
-							values (@idRol, @idUsuarioIngresado, @nombreCompleto, @observaciones)
-						else 
-							print 'El usuario se ingresó a la tabla usuario'
-	else 
-		print 'Rol ingresado no existe'
+						
 
 
+select * from roles
+select * from Administradores
+select * from Usuarios
+select * from Directores
+select * from BitacoraControlUsuarios
 
-
-insert into Roles values(1, 'Usuario', 'Puede trabajar en el proyecto')
+insert into Roles values(3, 'Director', 'Puede ingresar datos del proyecto en bitacora')
 go
 insert Usuarios(Nombre_Completo_Usuario, Telefono, Funcion, Fecha_Nacimiento, Id_Rol)
-values('Bayron Garcia Asy', 83164544, 'Dev', '2002-07-15', 1)
+values('Marco User', 83768060, 'Trabaja en proyecto', '1985-05-16', 1)
 
 delete from Usuarios where Id_Usuario = 12
 
