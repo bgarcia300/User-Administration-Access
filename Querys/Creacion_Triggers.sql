@@ -9,8 +9,10 @@ for insert
 as
 	declare @horaRegistro time(0) = getdate();
 	declare @fechaRegistro date = CAST(GETDATE() as date)
-	insert into BitacoraControlUsuarios
-	select inserted.Id_Usuario, inserted.Nombre_Completo_Usuario, @fechaRegistro, @horaRegistro, 'Usuarios', 'Se ingresa al usuario ' + inserted.Nombre_Completo_Usuario +' a la tabla usuarios'
+	insert into BitacoraControlUsuarios(Id_Usuario_Alterado, Nombre_Usuario_Alterado, Fecha_Registro_Modificacion, Hora_Registro_Modificacion
+										, Tabla_Rol_Alterada, Observacion)
+	select inserted.Id_Usuario, inserted.Nombre_Usuario +' '+inserted.Primer_Apellido_Usuario +' '+ inserted.Segundo_Apellido_Usuario
+	, @fechaRegistro, @horaRegistro, 'Usuarios', 'Se ingresa al usuario ' + inserted.Nombre_Usuario +' a la tabla usuarios'
 	from inserted
 go
 
@@ -23,16 +25,17 @@ for delete
 	as
 		declare @horaRegistro time(0) = getdate();
 		declare @fechaRegistro date = CAST(GETDATE() as date)
-		insert into BitacoraControlUsuarios
-		select deleted.Id_Usuario, deleted.Nombre_Completo_Usuario, @fechaRegistro, @horaRegistro, 
-		'Usuarios', 'Se elimina al usuario ' + deleted.Nombre_Completo_Usuario +' de la tabla usuarios'
+		insert into BitacoraControlUsuarios(Id_Usuario_Alterado, Nombre_Usuario_Alterado, Fecha_Registro_Modificacion, Hora_Registro_Modificacion
+										, Tabla_Rol_Alterada, Observacion)
+		select deleted.Id_Usuario, deleted.Nombre_Usuario +' '+deleted.Primer_Apellido_Usuario +' '+ deleted.Segundo_Apellido_Usuario
+		, @fechaRegistro, @horaRegistro, 'Usuarios', 'Se elimina al usuario ' + deleted.Nombre_Usuario +' de  la tabla usuarios'
 		from deleted
 go
 
 
 
 --Trigger Inserta Usuarios en tabla Administradores o Directores, segun rol ingresado
-alter trigger TriggerInsercionUsuarioEnTablaSegunRol
+create trigger TriggerInsercionUsuarioEnTablaSegunRol
 on Usuarios
 for insert 
 	as
@@ -44,8 +47,11 @@ for insert
 
 		if (@rolIngresado = 'Director')
 		begin
-			insert into Directores(Id_Rol, Id_Usuario, Nombre_Completo_Director)
-			select Id_Rol, Id_Usuario, Nombre_Completo_Usuario from inserted
+			insert into Directores(Id_Rol, Id_Usuario, Nombre_Director, Primer_Apellido_Director, Segundo_Apellido_Director
+									, Telefono, Correo_Electronico, observaciones)
+			select inserted.Id_Rol, inserted.Id_Usuario, inserted.Nombre_Usuario, inserted.Primer_Apellido_Usuario, inserted.Segundo_Apellido_Usuario
+					, inserted.Telefono, inserted.Correo_Electronico, inserted.observaciones
+			 from inserted
 			select 'El usuario se ingresó a la tabla Directores'
 		end
 
@@ -53,8 +59,11 @@ for insert
 			begin
 				if (@rolIngresado = 'Administrador')
 				begin
-						insert into Administradores(Id_Rol, Id_Usuario, Nombre_Completo_Administrador) 
-						select Id_Rol, Id_Usuario, Nombre_Completo_Usuario from inserted
+						insert into Administradores(Id_Rol, Id_Usuario, Nombre_Administrador, Primer_Apellido_Administrador, Segundo_Apellido_Administrador
+									, Telefono, Correo_Electronico, observaciones)
+						select inserted.Id_Rol, inserted.Id_Usuario, inserted.Nombre_Usuario, inserted.Primer_Apellido_Usuario, inserted.Segundo_Apellido_Usuario
+					, inserted.Telefono, inserted.Correo_Electronico, inserted.observaciones
+						 from inserted
 						select 'El usuario se ingresó a la tabla Administradores'
 				end
 					else 
@@ -73,11 +82,6 @@ go
 
 
 
-	--declare @rolIngresado nvarchar(15) = (select Nombre_Rol from Roles where Roles.Id_Rol = inserted.id_rol)
-	--if	(@rolIngresado = 'Director' or @rolIngresado = 'Administrador' or @rolIngresado = 'Usuario')
-	--				if	(@rolIngresado = 'Director')
-							
-						
 
 
 select * from roles
@@ -95,3 +99,5 @@ delete from Usuarios where Id_Usuario = 12
 
 select * from usuarios
 select * from BitacoraControlUsuarios
+
+select * from INFORMATION_SCHEMA.TABLES
