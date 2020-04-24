@@ -17,6 +17,8 @@ Id_Usuario int IDENTITY(1,1) PRIMARY KEY
 , Nombre_Usuario nvarchar(15) unique not null
 , Primer_Apellido_Usuario nvarchar(15) unique not null
 , Segundo_Apellido_Usuario nvarchar(15) unique not null
+, Nombre_Login nvarchar(30) not null
+, Contrasena binary(50) not null
 , Funcion nvarchar(40)
 , Fecha_Nacimiento date not null
 , Edad AS (datediff(Day,Fecha_Nacimiento,getdate()))/(365)
@@ -94,6 +96,7 @@ CASE
 	ELSE 'No se tiene conocimiento del estado'
 END
 )
+, Observacion nvarchar(500)
 , constraint FK_GRUPOS_PROYECTOS foreign key (Id_Grupo)
 references GRUPOS (Id_Grupo)
 )
@@ -103,7 +106,6 @@ create table BitacoraAvanceProyectos
 (
 Id_Bitacor_Avance_Proyecto int IDENTITY(1,1) PRIMARY KEY
 , Id_Proyecto int NOT NULL
-, Id_Director int NOT NULL
 , Fecha_Registro_Avance date NOT NULL
 , Hora_Registro_Avance time NOT NULL
 , Porcentaje_Avance numeric(9,2) NOT NULL

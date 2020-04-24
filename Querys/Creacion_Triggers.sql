@@ -16,8 +16,6 @@ as
 	from inserted
 go
 
-disable trigger TriggerInsercionBitacoraControlUsuario
-go
 --Trigger registra en bitacora cuando se elimina usuario
 create trigger TriggerEliminacionBitacoraControlUsuario
 on Usuarios
@@ -31,8 +29,6 @@ for delete
 		, @fechaRegistro, @horaRegistro, 'Usuarios', 'Se elimina al usuario ' + deleted.Nombre_Usuario +' de  la tabla usuarios'
 		from deleted
 go
-
-
 
 --Trigger Inserta Usuarios en tabla Administradores o Directores, segun rol ingresado
 create trigger TriggerInsercionUsuarioEnTablaSegunRol
@@ -79,25 +75,14 @@ for insert
 			
 go
 
-
-
-
-
-
-select * from roles
-select * from Administradores
-select * from Usuarios
-select * from Directores
-select * from BitacoraControlUsuarios
-
-insert into Roles values(3, 'Director', 'Puede ingresar datos del proyecto en bitacora')
+--Trigger para insertar los registros de cambios de proyectos en la bitacora correspondiente
+create trigger TriggerInsercionBitacoraAvanceProyecto
+on Proyectos
+for insert
+as
+	declare @horaRegistro time(0) = getdate();
+	declare @fechaRegistro date = CAST(GETDATE() as date);
+	insert into BitacoraAvanceProyectos(Id_Proyecto, Fecha_Registro_Avance, Hora_Registro_Avance, Porcentaje_Avance, Estado_Avance, Observacion)
+		select inserted.Id_Proyectos, @fechaRegistro, @horaRegistro, inserted.Porcentaje_Avance, inserted.Estado_Proyecto, inserted.Observacion
+		from inserted
 go
-insert Usuarios(Nombre_Completo_Usuario, Telefono, Funcion, Fecha_Nacimiento, Id_Rol)
-values('Marco User', 83768060, 'Trabaja en proyecto', '1985-05-16', 1)
-
-delete from Usuarios where Id_Usuario = 12
-
-select * from usuarios
-select * from BitacoraControlUsuarios
-
-select * from INFORMATION_SCHEMA.TABLES
