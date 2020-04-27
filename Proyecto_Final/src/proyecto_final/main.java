@@ -22,11 +22,20 @@ public class main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-       Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        String connectionURL = "jdbc:sqlserver://PORTATI01\\SQLEXPRESS2012:1433;databaseName=master;user=su;password=su;";
-        Connection con = DriverManager.getConnection(connectionURL);
-        System.out.println("Conectada");
+       Metodos methods = new Metodos();
         
+       String login = "E1881";
+       String password = "123";
+       String userName = "Esgrato";
+      
+       //methods.PruebaConexion(login, password);
+        //methods.CreacionLogin(login, password);
+        //methods.CreacionUsername(login, userName);
+       // methods.InsercionUsuario(3,"Estif", "Granados", "Torres", "Administrador de proyectos", "2002-09-16", 61059876, "estifgranados15@gmail.com",
+       //                         "Cot, Cartago", "E1881", "123", "Esgrato", "Administra los usuarios de los proyectos");
+       // System.out.println(methods.NombreUsuarioSegunId(3));
+       //System.out.println(methods.IdRolUsuario(3));
+       System.out.println(methods.IdUsuarioSegunLogin("E1881"));
     }
     
 }

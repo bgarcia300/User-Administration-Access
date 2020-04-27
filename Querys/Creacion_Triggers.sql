@@ -12,7 +12,7 @@ as
 	insert into BitacoraControlUsuarios(Id_Usuario_Alterado, Nombre_Usuario_Alterado, Fecha_Registro_Modificacion, Hora_Registro_Modificacion
 										, Tabla_Rol_Alterada, Observacion)
 	select inserted.Id_Usuario, inserted.Nombre_Usuario +' '+inserted.Primer_Apellido_Usuario +' '+ inserted.Segundo_Apellido_Usuario
-	, @fechaRegistro, @horaRegistro, 'Usuarios', 'Se ingresa al usuario ' + inserted.Nombre_Usuario +' a la tabla usuarios'
+	, @fechaRegistro, @horaRegistro, 'Usuarios', 'Se ingresa al usuario ' + inserted.Nombre_Usuario +' a la tabla usuarios y es un: ' + (select Nombre_Rol from Roles where Id_Rol = inserted.Id_Rol)
 	from inserted
 go
 
@@ -86,3 +86,4 @@ as
 		select inserted.Id_Proyectos, @fechaRegistro, @horaRegistro, inserted.Porcentaje_Avance, inserted.Estado_Proyecto, inserted.Observacion
 		from inserted
 go
+

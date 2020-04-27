@@ -17,8 +17,9 @@ Id_Usuario int IDENTITY(1,1) PRIMARY KEY
 , Nombre_Usuario nvarchar(15) unique not null
 , Primer_Apellido_Usuario nvarchar(15) unique not null
 , Segundo_Apellido_Usuario nvarchar(15) unique not null
+, Nombre_Username nvarchar(30) not null
 , Nombre_Login nvarchar(30) not null
-, Contrasena binary(50) not null
+, Contrasena nvarchar(40) not null
 , Funcion nvarchar(40)
 , Fecha_Nacimiento date not null
 , Edad AS (datediff(Day,Fecha_Nacimiento,getdate()))/(365)
