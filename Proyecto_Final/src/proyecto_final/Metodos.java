@@ -11,6 +11,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.mail.internet.AddressException;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.mail.internet.InternetAddress;
 
 /**
  *
@@ -19,19 +23,19 @@ import java.sql.Statement;
 public class Metodos {
     
     //Metodo para probar la conexion a la base de datos
-    public void PruebaConexion(String nombreUsuario, String contrasena) throws ClassNotFoundException, SQLException{
+    public void IniciarSesion(String nombreUsuario, String contrasena) throws ClassNotFoundException, SQLException{
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String connectionURL = "jdbc:sqlserver://PORTATI01\\SQLEXPRESS2012:1433;databaseName=ProyectoFinal;user="+nombreUsuario+";password="+contrasena+";";
         Connection con = DriverManager.getConnection(connectionURL);
-        System.out.println("Conectada");
+        System.out.println("Conectada con login");
     }
     
-    //Con este mnetodo creo el login, se ingresa con sa-sa en base de datos master
-    public void CreacionLogin(String loginName, String contrasena) throws ClassNotFoundException, SQLException{
+    //Con este metodo creo el login, se ingresa con sa-sa en base de datos master
+    public void RegistroNuevoLogin(String loginName, String contrasena) throws ClassNotFoundException, SQLException{
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String connectionURL = "jdbc:sqlserver://PORTATI01\\SQLEXPRESS2012:1433;databaseName=master;user=sa;password=sa;";
         Connection connect = DriverManager.getConnection(connectionURL);
-        System.out.println("Conectada");
+        System.out.println("Conectada para Registro Login");
         
         Statement st = connect.createStatement();
 
@@ -43,13 +47,12 @@ public class Metodos {
         
     }
     
-    //Con este mnetodo creo el usuario, se ingresa con sa-sa, en base de datos ProyectoFinal
-    
+    //Con este metodo creo el usuario, se ingresa con sa-sa, en base de datos ProyectoFinal
     public void CreacionUsername(String loginName, String nombreUsuario) throws ClassNotFoundException, SQLException{
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String connectionURL = "jdbc:sqlserver://PORTATI01\\SQLEXPRESS2012:1433;databaseName=ProyectoFinal;user=sa;password=sa;";
         Connection connect = DriverManager.getConnection(connectionURL);
-        System.out.println("Conectada");
+        System.out.println("Conectada para creacion Username");
         
         Statement st = connect.createStatement();
         
@@ -141,6 +144,53 @@ public class Metodos {
             idUsuario = SelectUsuario.getInt(1);
         }
         return idUsuario;
+    }
+    
+    //Modelo para la tabla cuando se seleccionen usuarios
+    public DefaultTableModel GeneracionTablaUsuarios() throws ClassNotFoundException, SQLException{
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String connectionURL = "jdbc:sqlserver://PORTATI01\\SQLEXPRESS2012:1433;databaseName=ProyectoFinal;user=sa;password=sa;";
+        Connection connect = DriverManager.getConnection(connectionURL);
+        System.out.println("Conectada para consulta Generacion de tabla de usuarios");
+      
+        Statement st = connect.createStatement();
+        ResultSet SelectUsuario = st.executeQuery("SELECT Id_Usuario, Nombre_Usuario, Primer_Apellido_Usuario, Segundo_Apellido_Usuario, Id_Rol, Funcion, Fecha_Nacimiento, Edad, Telefono, Correo_Electronico, Residencia, observaciones FROM Usuarios ");
+       
+        String data[][]={};
+        String titulos[]={"ID Usuario","Nombre","1er Apellido","2doApellido","ID Rol","Función","Fecha de nacimento","Edad", "Telefono", "Correo eletrónico", "Residencia", "Observaciones"};
+        DefaultTableModel modeloTabla;
+        modeloTabla = new DefaultTableModel(data, titulos);
+        
+        while(SelectUsuario.next()){
+            
+           Object datos[]={SelectUsuario.getInt(1),SelectUsuario.getNString(2),SelectUsuario.getNString(3),SelectUsuario.getNString(4),SelectUsuario.getInt(5),SelectUsuario.getNString(6),SelectUsuario.getDate(7),SelectUsuario.getInt(8),SelectUsuario.getInt(9),
+                            SelectUsuario.getNString(10), SelectUsuario.getNString(10), SelectUsuario.getNString(11), SelectUsuario.getNString(12)};
+           modeloTabla.addRow(datos);
+        }
+        return modeloTabla;
+    }
+    
+    //Modelo para la tabla cuando se seleccionen Grupos
+    public DefaultTableModel GeneracionTablaGrupos() throws ClassNotFoundException, SQLException{
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String connectionURL = "jdbc:sqlserver://PORTATI01\\SQLEXPRESS2012:1433;databaseName=ProyectoFinal;user=sa;password=sa;";
+        Connection connect = DriverManager.getConnection(connectionURL);
+        System.out.println("Conectada para consulta Generacion de tabla de Grupos");
+      
+        Statement st = connect.createStatement();
+        ResultSet SelectUsuario = st.executeQuery("SELECT * FROM Grupos");
+       
+        String data[][]={};
+        String titulos[]={"ID Grupo","ID Director","ID Usuarios","Nombre del Grupo", "Descripción"};
+        DefaultTableModel modeloTabla;
+        modeloTabla = new DefaultTableModel(data, titulos);
+        
+        while(SelectUsuario.next()){
+            
+           Object datos[]={SelectUsuario.getInt(1),SelectUsuario.getInt(2),SelectUsuario.getInt(3),SelectUsuario.getNString(4),SelectUsuario.getNString(5)};
+           modeloTabla.addRow(datos);
+        }
+        return modeloTabla;
     }
     
     }

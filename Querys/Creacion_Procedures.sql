@@ -1,46 +1,38 @@
 use ProyectoFinal
 go
 
-create procedure ProcedureInsercionUsuario
-(
+--Insercion de los roles
+insert into roles values (1, 'Usuario', 'Solo puede trabajar en el proyecto')
+go
+insert into roles values (2, 'Administrador', 'Puede agregar usuario pero no editar bitácoras')
+go
+insert into roles values (3, 'Director', 'Puede editar bitácoras pero no agregar usuarios')
+go
 
-@idRol int
-, @nombreCompleto nvarchar(30)
-, @telefono int 
-, @funcion nvarchar(40)
-, @fecha_Nacimiento date
-, @observaciones nvarchar(500) = 'No hay observaciones'
+--Procedures
+create procedure InsercionUsuario
+(
+@Id_Rol int
+, @Nombre_Usuario nvarchar(15)
+, @Primer_Apellido_Usuario nvarchar(15)
+, @Segundo_Apellido_Usuario nvarchar(15)
+, @Funcion nvarchar(40)
+, @Fecha_Nacimiento date
+, @Telefono int
+, @Correo_Electronico nvarchar(40)
+, @Residencia nvarchar(500)
+, @Nombre_Login nvarchar(30)
+, @Contrasena nvarchar(40)
+, @Nombre_Username nvarchar(30)
+, @observaciones nvarchar(500)
 )
 as
-begin Try 
-		begin Transaction InsercionUsuario
-
-			
-			insert into Usuarios (Id_Rol,Nombre_completo_Usuario, Telefono, Funcion, Fecha_Nacimiento) 
-			values (@idRol,@nombreCompleto, @telefono, @funcion, @fecha_Nacimiento)
-
-			declare @rolIngresado nvarchar(15) = (select Nombre_Rol from Roles where Roles.Id_Rol = @idRol)
-			declare @idUsuarioIngresado int = (select Id_Usuario from Usuarios where Nombre_Completo_Usuario = @nombreCompleto)
-
-				if	(@rolIngresado = 'Director' or @rolIngresado = 'Administrador' or @rolIngresado = 'Usuario')
-					if	(@rolIngresado = 'Director')
-							insert into Directores(Id_Rol, Id_Usuario, Nombre_Completo_Director, Observaciones) 
-							values (@idRol, @idUsuarioIngresado, @nombreCompleto, @observaciones)
-						else
-					if (@rolIngresado = 'Administrador')
-							insert into Administradores(Id_Rol, Id_Usuario, Nombre_Completo_Administrador, Observaciones) 
-							values (@idRol, @idUsuarioIngresado, @nombreCompleto, @observaciones)
-					else 
-						print 'El usuario se ingresó a la tabla usuario'
-	
-		commit Transaction InsercionUsuario
-
-	End try 
-	Begin Catch 
-
-		select 'El rol ingresado no existe. ' + ERROR_MESSAGE()
-		Rollback Transaction InsercionUsuario
-
-	End catch 
+begin
+	insert into Usuarios(Id_rol, Nombre_Usuario, Primer_Apellido_Usuario, Segundo_Apellido_Usuario, Funcion, Fecha_Nacimiento, Telefono
+						, Correo_Electronico, Residencia, Nombre_Login, Contrasena, Nombre_Username, Observaciones)
+				values(@Id_Rol, UPPER(@Nombre_Usuario), UPPER(@Primer_Apellido_Usuario), UPPER(@Segundo_Apellido_Usuario), UPPER(@Funcion), @Fecha_Nacimiento, @Telefono
+						, LOWER(@Correo_Electronico), UPPER(@Residencia), LOWER(@Nombre_Login), @Contrasena, LOWER(@Nombre_Username), UPPER(@observaciones))
+end
 go
+
 
