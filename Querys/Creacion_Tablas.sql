@@ -84,11 +84,11 @@ Id_Proyectos int IDENTITY(1,1) PRIMARY KEY
 , Porcentaje_Avance int NOT NULL
 , Estado_Proyecto AS ( 
 CASE 
-	WHEN Porcentaje_Avance >= 0 and Porcentaje_Avance <= 30 THEN 'Comenzando' 
-	WHEN Porcentaje_Avance >= 31 and Porcentaje_Avance <= 75 THEN 'En Proceso' 
-	WHEN Porcentaje_Avance >= 76 and Porcentaje_Avance <= 99 THEN 'Finalizando' 
-	WHEN Porcentaje_Avance = 100 THEN 'Completado' 
-	ELSE 'No se tiene conocimiento del estado'
+	WHEN Porcentaje_Avance >= 0 and Porcentaje_Avance <= 30 THEN 'COMENZANDO' 
+	WHEN Porcentaje_Avance >= 31 and Porcentaje_Avance <= 75 THEN 'EN PROCESO' 
+	WHEN Porcentaje_Avance >= 76 and Porcentaje_Avance <= 99 THEN 'FINALIZANDO' 
+	WHEN Porcentaje_Avance = 100 THEN 'COMPLETADO' 
+	ELSE 'NO SE TIENE CONOCIMIENTO DEL ESTADO'
 END
 )
 , Observacion nvarchar(500)
