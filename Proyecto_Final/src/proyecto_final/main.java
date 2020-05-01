@@ -25,24 +25,28 @@ public class main {
     public static void main(String[] args) throws ClassNotFoundException, SQLException, AddressException {
        Metodos methods = new Metodos();
        loginInicial WindowLoginInicial = new loginInicial();
-       ValidacionesIngresoDatosNuevoUsuario metodoValidacionUsuario = new ValidacionesIngresoDatosNuevoUsuario();
+       NuevasInsercionesUsuario metodoValidacionUsuario = new NuevasInsercionesUsuario();
+       VentanaPrincipalDirectores ventanaDirectores = new VentanaPrincipalDirectores();
+       
         
-       String login = "Marco123";
-       String password = "123";
-       String userName = "Marco";
+       //String login = "Marco123";
+       //String password = "123";
+       //String userName = "Marco";
       
         //methods.IniciarSesion(login, password);
         //methods.RegistroNuevoLogin(login, password);
         //methods.CreacionUsername(login, userName);
-        //methods.InsercionUsuario(2,"Maro", "Garcia", "Saabria", "Administrador Principal", "1987-05-20", 83768060, "marcogs15@gmail.com",
+        //methods.InsercionUsuario(2,"Marco", "Garcia", "Saabria", "Administrador Principal", "1987-05-20", 83768060, "marcogs15@gmail.com",
         //                        "Tejar, Cartago", login, "123", userName, "Administrador unico");
        // System.out.println(methods.NombreUsuarioSegunId(3));
        //System.out.println(methods.IdRolUsuario(3));
        //System.out.println(methods.IdUsuarioSegunLogin("E1881"));
-
-       //WindowLoginInicial.setVisible(true);
-       //WindowLoginInicial.setLocationRelativeTo(null);
-       metodoValidacionUsuario.ConvertidorFechaAString("2002-08-15");
+       WindowLoginInicial.setVisible(true);
+       WindowLoginInicial.setLocationRelativeTo(null);
+       
+       
+       
+       //metodoValidacionUsuario.ConvertidorFechaAString("2002-08-15");
     }
     
 }

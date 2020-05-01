@@ -35,4 +35,98 @@ begin
 end
 go
 
+create procedure EliminacionUsuarioPorNombreCompleto
+(
+@nombreUsuario nvarchar(150)
+)
+as
+begin
+	delete from Usuarios where Nombre_Usuario + ' ' + Primer_Apellido_Usuario + ' ' + Segundo_Apellido_Usuario = @nombreUsuario
+	delete from Administradores where Nombre_Administrador + ' ' + Primer_Apellido_Administrador + ' ' + Segundo_Apellido_Administrador = @nombreUsuario
+	delete from Directores where Nombre_Director + ' ' + Primer_Apellido_Director + ' ' + Segundo_Apellido_Director = @nombreUsuario
+end
+go
 
+create procedure InsercionNuevoProyecto
+(
+@idGrupo int
+, @nombreProyecto nvarchar(40)
+, @porcentajeAvance int
+, @observacion nvarchar(500)
+)
+as
+begin
+	insert into Proyectos(Id_Grupo, Nombre_Proyecto, Porcentaje_Avance, Observacion)
+	values(@idGrupo, UPPER(@nombreProyecto), @porcentajeAvance, UPPER(@observacion))
+end
+go
+
+create procedure InsercionNuevoGrupo
+(
+@idDirector int
+, @idUsuario nvarchar(max)
+, @nombreGrupo nvarchar(40)
+, @descripcion nvarchar(500)
+)
+as
+begin
+	insert into Grupos(Id_Director, Id_Usuario, Nombre_Grupo, Descripcion)
+	values(@idDirector, UPPER(@idUsuario), UPPER(@nombreGrupo), UPPER(@descripcion))
+end
+go
+
+create procedure ActualizacionPorcentajeAvanceProyecto
+(
+@nombreProyecto nvarchar(40)
+, @porcentajeAvance int
+, @observacion nvarchar(500)
+)
+as
+begin
+	update Proyectos
+	set Porcentaje_Avance = UPPER(@porcentajeAvance), observacion = @observacion
+	where Nombre_Proyecto = @nombreProyecto
+end
+go
+
+create procedure ActualizacionUsuariosGrupos
+(
+@nombreGrupo nvarchar(40)
+, @idUsuarios nvarchar(100)
+, @descripcion nvarchar(500)
+)
+as
+begin
+	update Grupos
+	set Id_Usuario = UPPER((select Id_Usuario from Grupos where Nombre_Grupo = @nombreGrupo) +','+@idUsuarios), Descripcion = UPPER(@descripcion)
+	where Nombre_Grupo = @nombreGrupo
+end
+go
+
+create procedure EliminacionGrupoProNombre
+(
+@nombreGrupo nvarchar(40)
+, @descripcion nvarchar(500)
+)
+as
+begin
+	update Grupos
+	set Descripcion = UPPER(@descripcion)
+	where Nombre_Grupo = @nombreGrupo
+	delete from grupos where Nombre_Grupo = @nombreGrupo
+end
+go
+
+create procedure EliminacionProyectoPorNombre
+(
+@nombreProyecto nvarchar(40)
+, @observacion nvarchar(500)
+)
+as
+begin
+	update Proyectos
+	set Observacion = UPPER(@observacion)
+	where Nombre_Proyecto = @nombreProyecto
+	delete from Proyectos where Nombre_Proyecto = @nombreProyecto
+end
+go

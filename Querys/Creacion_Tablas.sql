@@ -45,8 +45,6 @@ Id_Administrador int IDENTITY(1,1) PRIMARY KEY
 , observaciones nvarchar(500) null
 , constraint FK_ROLES_ADMINISTRADORES foreign key (Id_Rol)
 references Roles (Id_Rol)
-, constraint FK_USUARIOS_ADMINISTRADORES foreign key (Id_Usuario)
-references Usuarios (Id_Usuario)
 )
 go
 
@@ -63,8 +61,6 @@ Id_Director int IDENTITY(1,1) PRIMARY KEY
 , observaciones nvarchar(500) null
 , constraint FK_ROLES_DIRECTORES foreign key (Id_Rol)
 references Roles (Id_Rol)
-, constraint FK_USUARIOS_DIRECTORES foreign key (Id_Usuario)
-references Usuarios (Id_Usuario)
 )
 go
 
@@ -72,13 +68,11 @@ create table Grupos
 (
 Id_Grupo int IDENTITY(1,1) PRIMARY KEY
 , Id_Director int NOT NULL
-, Id_Usuario int NOT NULL
+, Id_Usuario nvarchar(MAX) NOT NULL
 , Nombre_Grupo nvarchar(40) NOT NULL
 , Descripcion nvarchar(500)
 , constraint FK_DIRECTORES_GRUPOS foreign key (Id_Director)
 references Directores (Id_Director)
-, constraint FK_USUARIOS_GRUPOS foreign key (Id_Usuario)
-references Usuarios (Id_Usuario)
 )
 go
 
