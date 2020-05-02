@@ -215,8 +215,8 @@ public class VentanaPrincipalAdministradores extends javax.swing.JFrame {
 
     private void botonAgregarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarUsuarioActionPerformed
         VentanaAgregarUsuario ventanaAgregarUsuario = new VentanaAgregarUsuario(this, true);
-        ventanaAgregarUsuario.setVisible(true);
         ventanaAgregarUsuario.setLocationRelativeTo(null);
+        ventanaAgregarUsuario.setVisible(true);
     }//GEN-LAST:event_botonAgregarUsuarioActionPerformed
 
     private void botonBitacoraUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBitacoraUsuarioActionPerformed
@@ -259,12 +259,14 @@ public class VentanaPrincipalAdministradores extends javax.swing.JFrame {
     private void botonEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarUsuarioActionPerformed
         VentanaEliminarUsuario ventanaEliminarUsuario = new VentanaEliminarUsuario(this, true);
  
-try {
+        try {
             nuevaInsercion.ComboBoxSetValueNombresUsuarios(ventanaEliminarUsuario.comboBoxIdUsuario);
+            ventanaEliminarUsuario.setVisible(true);
+            ventanaEliminarUsuario.setLocationRelativeTo(this);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(VentanaAgregarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ventanaEliminarUsuario.setVisible(true);
+        
         
     }//GEN-LAST:event_botonEliminarUsuarioActionPerformed
 
