@@ -1,1 +1,4 @@
+
 Agrego notas a branch secundario
+Archivo para modificar parte gráfica del programa
+
