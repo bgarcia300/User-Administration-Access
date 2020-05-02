@@ -14,9 +14,9 @@ create table Usuarios
 (
 Id_Usuario int IDENTITY(1,1) PRIMARY KEY
 , Id_Rol int NOT NULL
-, Nombre_Usuario nvarchar(15) unique not null
-, Primer_Apellido_Usuario nvarchar(15) unique not null
-, Segundo_Apellido_Usuario nvarchar(15) unique not null
+, Nombre_Usuario nvarchar(15) not null
+, Primer_Apellido_Usuario nvarchar(15) not null
+, Segundo_Apellido_Usuario nvarchar(15) not null
 , Nombre_Username nvarchar(30) not null
 , Nombre_Login nvarchar(30) not null
 , Contrasena nvarchar(40) not null
@@ -37,9 +37,9 @@ create table Administradores
 Id_Administrador int IDENTITY(1,1) PRIMARY KEY
 , Id_Rol int NOT NULL
 , Id_Usuario int NOT NULL
-, Nombre_Administrador nvarchar(15) unique not null
-, Primer_Apellido_Administrador nvarchar(15) unique not null
-, Segundo_Apellido_Administrador nvarchar(15) unique not null
+, Nombre_Administrador nvarchar(15) not null
+, Primer_Apellido_Administrador nvarchar(15) not null
+, Segundo_Apellido_Administrador nvarchar(15) not null
 , Telefono int not null
 , Correo_Electronico nvarchar(40) not null
 , observaciones nvarchar(500) null
@@ -53,9 +53,9 @@ create table Directores
 Id_Director int IDENTITY(1,1) PRIMARY KEY
 , Id_Rol int NOT NULL
 , Id_Usuario int NOT NULL
-, Nombre_Director nvarchar(15) unique not null
-, Primer_Apellido_Director nvarchar(15) unique not null
-, Segundo_Apellido_Director nvarchar(15) unique not null
+, Nombre_Director nvarchar(15) not null
+, Primer_Apellido_Director nvarchar(15) not null
+, Segundo_Apellido_Director nvarchar(15) not null
 , Telefono int not null
 , Correo_Electronico nvarchar(40) not null
 , observaciones nvarchar(500) null

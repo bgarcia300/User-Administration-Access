@@ -41,6 +41,10 @@ create procedure EliminacionUsuarioPorNombreCompleto
 )
 as
 begin
+	declare @login nvarchar(30) = (select Nombre_login from Usuarios where Nombre_Usuario + ' ' + Primer_Apellido_Usuario + ' ' + Segundo_Apellido_Usuario = @nombreUsuario)
+	declare @userName nvarchar(30) = (select Nombre_Username from Usuarios where Nombre_Usuario + ' ' + Primer_Apellido_Usuario + ' ' + Segundo_Apellido_Usuario = @nombreUsuario)	
+	exec sp_droplogin @login
+	exec sp_dropuser @userName
 	delete from Usuarios where Nombre_Usuario + ' ' + Primer_Apellido_Usuario + ' ' + Segundo_Apellido_Usuario = @nombreUsuario
 	delete from Administradores where Nombre_Administrador + ' ' + Primer_Apellido_Administrador + ' ' + Segundo_Apellido_Administrador = @nombreUsuario
 	delete from Directores where Nombre_Director + ' ' + Primer_Apellido_Director + ' ' + Segundo_Apellido_Director = @nombreUsuario
